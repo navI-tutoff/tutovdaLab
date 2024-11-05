@@ -3,48 +3,33 @@ package tech.reliab.course.tutovda.bank.entity;
 import tech.reliab.course.tutovda.bank.service.BankOfficeService;
 
 public class BankOffice {
-    private int id;
-    private String name;
-    private String address;
-    private boolean isWorking;
-    private boolean isAtmPlaceable;
-    private int atmsAmount;
-    private boolean isCreditAvailable;
-    private boolean isCashOutputAvailable;
-    private boolean isCashInputAvailable;
-    private long totalMoney;
-    private int rentPrice;
+    private int id = (int) (1 + Math.random() * 10000);
+    private String name = "-";
+    private String address = "-";
+    private Bank bank = null;
+    private boolean isWorking = false;
+    private boolean isAtmPlaceable = false;
+    private int atmsAmount = 0;
+    private boolean isCreditAvailable = false;
+    private boolean isCashOutputAvailable = false;
+    private boolean isCashInputAvailable = false;
+    private long totalMoney = 0;
+    private int rentPrice = 0;
 
-    private void defaultInitialization() {
-        id = (int) (1 + Math.random() * 10000);
-        name = "-";
-        address = "-";
-        isWorking = false;
-        isAtmPlaceable = false;
-        atmsAmount = 0;
-        isCreditAvailable = false;
-        isCashOutputAvailable = false;
-        isCashInputAvailable = false;
-        totalMoney = 0;
-        rentPrice = 0;
-    }
-
-    public BankOffice() {
-        defaultInitialization();
-    }
+    public BankOffice() {}
 
     public BankOffice(String name, String address) {
-        defaultInitialization();
         this.name = name;
         this.address = address;
     }
 
-    public BankOffice(int id, String name, String address, boolean isWorking, boolean isAtmPlaceable,
+    public BankOffice(int id, String name, String address, Bank bank, boolean isWorking, boolean isAtmPlaceable,
                       int atmsAmount, boolean isCreditAvailable, boolean isCashOutputAvailable,
                       boolean isCashInputAvailable, long totalMoney, int rentPrice) {
         this.id = id;
         this.name = name;
         this.address = address;
+        this.bank = bank;
         this.isWorking = isWorking;
         this.isAtmPlaceable = isAtmPlaceable;
         this.atmsAmount = atmsAmount;
@@ -59,6 +44,7 @@ public class BankOffice {
         this.id = bankOffice.id;
         this.name = bankOffice.name;
         this.address = bankOffice.address;
+        this.bank = new Bank(bankOffice.bank);
         this.isWorking = bankOffice.isWorking;
         this.isAtmPlaceable = bankOffice.isAtmPlaceable;
         this.atmsAmount = bankOffice.atmsAmount;
@@ -85,6 +71,7 @@ public class BankOffice {
                 "*** **************** ***";
     }
 
+    // ============== getters & setters ==============
     public int getId() {
         return id;
     }
@@ -107,6 +94,14 @@ public class BankOffice {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Bank getBank() {
+        return bank;
+    }
+
+    public void setBank(Bank bank) {
+        this.bank = bank;
     }
 
     public boolean isWorking() {

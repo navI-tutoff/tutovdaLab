@@ -3,31 +3,20 @@ package tech.reliab.course.tutovda.bank.entity;
 
 
 public class Bank {
-    private int id;
-    private String name;
-    private int officesAmount;
-    private int atmsAmount;
-    private int employeesAmount;
-    private int clientsAmount;
-    private byte rating;
-    private long totalMoney;
-    private int interestRate;
+    public final double MAX_INTEREST_RATE = 20.0;
+    public final int MAX_BANK_RATING = 100;
 
-    private void defaultInitialization() {
-        id = (int) (1 + Math.random() * 10000);
-        name = "-";
-        officesAmount = 0;
-        atmsAmount = 0;
-        employeesAmount = 0;
-        clientsAmount = 0;
-        rating = 0;
-        totalMoney = 0;
-        interestRate = 0;
-    }
+    private int id = (int) (1 + Math.random() * 10000);
+    private String name = "-";
+    private int officesAmount = 0;
+    private int atmsAmount = 0;
+    private int employeesAmount = 0;
+    private int clientsAmount = 0;
+    private byte rating = (byte) (1 + Math.random() * 100);
+    private long totalMoney = 0;
+    private double interestRate = 0;
 
-    public Bank() {
-        defaultInitialization();
-    }
+    public Bank() {}
 
     public Bank(Bank bank) {
         id = bank.id;
@@ -41,8 +30,12 @@ public class Bank {
         interestRate = bank.interestRate;
     }
 
+    public Bank(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Bank(String name) {
-        defaultInitialization();
         this.name = name;
     }
 
@@ -125,11 +118,11 @@ public class Bank {
         this.totalMoney = totalMoney;
     }
 
-    public int getInterestRate() {
+    public double getInterestRate() {
         return interestRate;
     }
 
-    public void setInterestRate(int interestRate) {
+    public void setInterestRate(byte interestRate) {
         this.interestRate = interestRate;
     }
 }

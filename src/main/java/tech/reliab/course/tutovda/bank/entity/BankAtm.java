@@ -3,38 +3,21 @@ package tech.reliab.course.tutovda.bank.entity;
 public class BankAtm {
     public enum Status {NOT_WORKING, WORKING, NO_MONEY}
 
-    private int id;
-    private String name;
-    private String address;
-    private Status status;
-    private Bank bank;
-    private BankOffice bankOffice;
-    private Employee employee;
-    private boolean isCashOutputAvailable;
-    private boolean isCashInputAvailable;
-    private long totalMoney;
-    private int maintenancePrice;
+    private int id = (int) (1 + Math.random() * 10000);
+    private String name = "-";
+    private String address = "-";
+    private Status status = Status.NOT_WORKING;
+    private Bank bank = null;
+    private BankOffice bankOffice = null;
+    private Employee employee = null;
+    private boolean isCashOutputAvailable = false;
+    private boolean isCashInputAvailable = false;
+    private long totalMoney = 0;
+    private int maintenancePrice = 0;
 
-    private void defaultInitialization() {
-        id = (int) (1 + Math.random() * 10000);
-        name = "-";
-        address = "-";
-        status = Status.NOT_WORKING;
-        bank = null;
-        bankOffice = null;
-        employee = null;
-        isCashOutputAvailable = false;
-        isCashInputAvailable = false;
-        totalMoney = 0;
-        maintenancePrice = 0;
-    }
-
-    public BankAtm() {
-        defaultInitialization();
-    }
+    public BankAtm() {}
 
     public BankAtm(String name, String address) {
-        defaultInitialization();
         this.name = name;
         this.address = address;
     }
@@ -60,9 +43,9 @@ public class BankAtm {
         this.name = bankAtm.name;
         this.address = bankAtm.address;
         this.status = bankAtm.status;
-        this.bank = bankAtm.bank;
-        this.bankOffice = bankAtm.bankOffice;
-        this.employee = bankAtm.employee;
+        this.bank = new Bank(bankAtm.bank);
+        this.bankOffice = new BankOffice(bankAtm.bankOffice);
+        this.employee = new Employee(bankAtm.employee);
         this.isCashOutputAvailable = bankAtm.isCashOutputAvailable;
         this.isCashInputAvailable = bankAtm.isCashInputAvailable;
         this.totalMoney = bankAtm.totalMoney;
@@ -85,6 +68,7 @@ public class BankAtm {
                 "*** ************* ***";
     }
 
+    // ============== getters & setters ==============
     public int getId() {
         return id;
     }
