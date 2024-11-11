@@ -29,82 +29,88 @@ public class Main {
     public static void main(String[] args) {
         BankService bankService = new BankServiceImpl();
         Bank bank = bankService.create(new Bank("Ultra mega blatnoy bank"));
+        Bank bank2 = bankService.create(new Bank("2"));
+        Bank bank3 = bankService.create(new Bank("3"));
+        Bank bank4 = bankService.create(new Bank("4"));
         System.out.println(bank);
+        System.out.println(bank2);
+        System.out.println(bank3);
+        System.out.println(bank4);
 
-        BankOfficeService bankOfficeService = new BankOfficeServiceImpl();
-        BankOffice bankOffice = bankOfficeService.create(new BankOffice(
-                1337,
-                "Office of blatnoy bank",
-                "street Pushkina, house Kolotyshkina",
-                bank,
-                true,
-                true,
-                0,
-                true,
-                true,
-                true,
-                bank.getTotalMoney(),
-                123
-                ));
-        System.out.println(bankOffice);
-
-        EmployeeService employeeService = new EmployeeServiceImpl();
-        Employee employee = employeeService.create(new Employee(
-                1,
-                "Ruslan Polivaniy",
-                LocalDate.of(2003, 12, 9),
-                "Cleaner",
-                bank,
-                false,
-                bankOffice,
-                false,
-                7000
-        ));
-        System.out.println(employee);
-
-        BankAtmService bankAtmService = new BankAtmServiceImpl();
-        BankAtm bankAtm = bankAtmService.create(new BankAtm(
-                1,
-                "Super ATM of Blatnoy bank",
-                bankOffice.getAddress(),
-                BankAtm.Status.WORKING,
-                bank,
-                bankOffice,
-                employee,
-                true,
-                true,
-                0,
-                17));
-        System.out.println(bankAtm);
-
-        UserService userService = new UserServiceImpl();
-        User user = userService.create(new User(
-                42,
-                "Alexey Starodybov",
-                LocalDate.of(2003, 7, 29),
-                "Golugolu",
-                6875321,
-                bank,
-                3
-        ));
-
-        PaymentAccountService paymentAccountService = new PaymentAccountServiceImpl();
-        PaymentAccount paymentAccount = paymentAccountService.create(new PaymentAccount(1, user, bank, 8975));
-        System.out.println(paymentAccount);
-
-        CreditAccountService creditAccountService = new CreditAccountServiceImpl();
-        CreditAccount creditAccount = creditAccountService.create(new CreditAccount(
-                1,
-                user,
-                bank,
-                LocalDate.of(1999, 1, 1),
-                LocalDate.of(1999, 2, 1),
-                1,
-                16000,
-                50,
-                3,
-                employee,
-                paymentAccount));
-        System.out.println(creditAccount);
+//        BankOfficeService bankOfficeService = new BankOfficeServiceImpl();
+//        BankOffice bankOffice = bankOfficeService.create(new BankOffice(
+//                1337,
+//                "Office of blatnoy bank",
+//                "street Pushkina, house Kolotyshkina",
+//                bank,
+//                true,
+//                true,
+//                0,
+//                true,
+//                true,
+//                true,
+//                bank.getTotalMoney(),
+//                123
+//                ));
+//        System.out.println(bankOffice);
+//
+//        EmployeeService employeeService = new EmployeeServiceImpl();
+//        Employee employee = employeeService.create(new Employee(
+//                1,
+//                "Ruslan Polivaniy",
+//                LocalDate.of(2003, 12, 9),
+//                "Cleaner",
+//                bank,
+//                false,
+//                bankOffice,
+//                false,
+//                7000
+//        ));
+//        System.out.println(employee);
+//
+//        BankAtmService bankAtmService = new BankAtmServiceImpl();
+//        BankAtm bankAtm = bankAtmService.create(new BankAtm(
+//                1,
+//                "Super ATM of Blatnoy bank",
+//                bankOffice.getAddress(),
+//                BankAtm.Status.WORKING,
+//                bank,
+//                bankOffice,
+//                employee,
+//                true,
+//                true,
+//                0,
+//                17));
+//        System.out.println(bankAtm);
+//
+//        UserService userService = new UserServiceImpl();
+//        User user = userService.create(new User(
+//                42,
+//                "Alexey Starodybov",
+//                LocalDate.of(2003, 7, 29),
+//                "Golugolu",
+//                6875321,
+//                bank,
+//                3
+//        ));
+//
+//        PaymentAccountService paymentAccountService = new PaymentAccountServiceImpl();
+//        PaymentAccount paymentAccount = paymentAccountService.create(new PaymentAccount(1, user, bank, 8975));
+//        System.out.println(paymentAccount);
+//
+//        CreditAccountService creditAccountService = new CreditAccountServiceImpl();
+//        CreditAccount creditAccount = creditAccountService.create(new CreditAccount(
+//                1,
+//                user,
+//                bank,
+//                LocalDate.of(1999, 1, 1),
+//                LocalDate.of(1999, 2, 1),
+//                1,
+//                16000,
+//                50,
+//                3,
+//                employee,
+//                paymentAccount));
+//        System.out.println(creditAccount);
     }
 }

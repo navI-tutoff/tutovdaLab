@@ -6,13 +6,14 @@ import lombok.*;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @ToString(includeFieldNames = true)
 public class Bank {
     public final double MAX_INTEREST_RATE = 20.0;
     public final int MAX_BANK_RATING = 100;
 
-    private int id = (int) (1 + Math.random() * 10000);
+    private static int counterId;
+
+    private int id = 0;
     private String name = "-";
     private int officesAmount = 0;
     private int atmsAmount = 0;
@@ -21,6 +22,15 @@ public class Bank {
     private byte rating = (byte) (1 + Math.random() * 100);
     private long totalMoney = 0;
     private double interestRate = 0;
+
+    // special initialization with incrementing global counter
+    private void initId() {
+        id = counterId++;
+    }
+
+    public Bank() {
+        initId();
+    }
 
     public Bank(Bank bank) {
         id = bank.id;
@@ -40,6 +50,7 @@ public class Bank {
     }
 
     public Bank(String name) {
+        initId();
         this.name = name;
     }
 }
