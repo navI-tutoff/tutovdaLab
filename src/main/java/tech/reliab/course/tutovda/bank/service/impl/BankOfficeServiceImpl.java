@@ -4,8 +4,23 @@ import tech.reliab.course.tutovda.bank.entity.BankAtm;
 import tech.reliab.course.tutovda.bank.entity.BankOffice;
 import tech.reliab.course.tutovda.bank.entity.Employee;
 import tech.reliab.course.tutovda.bank.service.BankOfficeService;
+import tech.reliab.course.tutovda.bank.service.BankService;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BankOfficeServiceImpl implements BankOfficeService {
+    private final Map<Integer, BankOffice> bankOfficesMap = new HashMap<>();
+    private final Map<Integer, List<Employee>> employeesByBankOfficeIdMap = new HashMap<>();
+    private final Map<Integer, List<BankAtm>> BankAtmsByBankOfficeIdMap = new HashMap<>();
+    private final BankService bankService;
+
+    public BankOfficeServiceImpl(BankService bankService) {
+        this.bankService = bankService;
+    }
+
     public BankOffice create(BankOffice bankOffice) {
         if (bankOffice == null) {
             return null;
@@ -26,10 +41,33 @@ public class BankOfficeServiceImpl implements BankOfficeService {
             return null;
         }
 
-        return new BankOffice(bankOffice);
+        BankOffice newOffice = new BankOffice(bankOffice);
+        bankOfficesMap.put(bankOffice.getId(), newOffice);
+        employeesByBankOfficeIdMap.put(newOffice.getId(), new ArrayList<>());
+        BankAtmsByBankOfficeIdMap.put(newOffice.getId(), new ArrayList<>());
+        bankService.addOffice(newOffice.getBank().getId(), newOffice);
+
+        return newOffice;
     }
 
-    public boolean inputMoney(BankOffice bankOffice, int money) {
+    public BankOffice getBankOfficeById(int id) {
+        BankOffice office = bankOfficesMap.get(id);
+        if (office == null) {
+            System.err.println("[ERROR] Office with id -> " + id + " is not found");
+        }
+        return office;
+    }
+
+    public List<BankOffice> getAllBankOffices() {
+        return new ArrayList<BankOffice>(bankOfficesMap.values());
+    }
+
+    public List<Employee> getAllEmployeesByOfficeId(int id) {
+        return employeesByBankOfficeIdMap.get(id);
+    }
+
+    public boolean inputMoney(int id, int money) {
+        BankOffice bankOffice = bankOfficesMap.get(id);
         if (bankOffice == null) {
             System.err.println("[ERROR] | BankOffice -> can not deposit money to not existing office");
             return false;
@@ -49,7 +87,8 @@ public class BankOfficeServiceImpl implements BankOfficeService {
         return true;
     }
 
-    public boolean outputMoney(BankOffice bankOffice, int money) {
+    public boolean outputMoney(int id, int money) {
+        BankOffice bankOffice = bankOfficesMap.get(id);
         if (bankOffice == null) {
             System.err.println("[ERROR] | BankOffice -> can not withdraw money from not existing office");
             return false;
@@ -74,7 +113,8 @@ public class BankOfficeServiceImpl implements BankOfficeService {
         return true;
     }
 
-    public boolean installAtm(BankOffice bankOffice, BankAtm bankAtm) {
+    public boolean installAtm(int id, BankAtm bankAtm) {
+        BankOffice bankOffice = bankOfficesMap.get(id);
         if (bankOffice != null && bankAtm != null) {
             if (!bankOffice.isAtmPlaceable()) {
                 System.err.println("[ERROR] | BankOffice -> can not install atm");
@@ -82,37 +122,50 @@ public class BankOfficeServiceImpl implements BankOfficeService {
             }
 
             bankOffice.setAtmsAmount(bankOffice.getAtmsAmount() + 1);
+            bankOffice.getBank().setAtmsAmount(bankOffice.getBank().getAtmsAmount() + 1);
             bankAtm.setBankOffice(bankOffice);
             bankAtm.setAddress(bankOffice.getAddress());
+            bankAtm.setBank(bankOffice.getBank());
+            List<BankAtm> bankAtms = BankAtmsByBankOfficeIdMap.get(bankOffice.getId());
+            bankAtms.add(bankAtm);
             return true;
         }
         return false;
     }
 
-    public boolean removeAtm(BankOffice bankOffice, BankAtm bankAtm) {
+    public boolean removeAtm(int id, BankAtm bankAtm) {
+        BankOffice bankOffice = bankOfficesMap.get(id);
         if (bankOffice != null && bankAtm != null) {
-            final int newAtmCountOffice = bankOffice.getAtmsAmount() - 1;
-            if (newAtmCountOffice < 0) {
+            if (bankOffice.getAtmsAmount() - 1 < 0) {
                 System.err.println("[ERROR] | BankOffice -> can not remove ATM, no ATMs");
                 return false;
             }
 
-            bankOffice.setAtmsAmount(newAtmCountOffice);
+            bankOffice.setAtmsAmount(bankOffice.getAtmsAmount() - 1);
             return true;
         }
         return false;
     }
 
-    public boolean addEmployee(BankOffice bankOffice, Employee employee) {
+    public boolean addEmployee(int id, Employee employee) {
+        BankOffice bankOffice = bankOfficesMap.get(id);
         if (bankOffice != null && employee != null) {
             employee.setBankOffice(bankOffice);
             employee.setBank(bankOffice.getBank());
+            List<Employee> officeEmployees = employeesByBankOfficeIdMap.get(bankOffice.getId());
+            officeEmployees.add(employee);
             return true;
         }
         return false;
     }
 
-    public boolean removeEmployee(BankOffice bankOffice, Employee employee) {
-        return bankOffice != null && employee != null;
+    public boolean removeEmployee(int id, Employee employee) {
+        BankOffice bankOffice = bankOfficesMap.get(id);
+        if (bankOffice != null && employee != null) {
+            List<Employee> officeEmployees = employeesByBankOfficeIdMap.get(bankOffice.getId());
+            officeEmployees.remove(employee);
+            return true;
+        }
+        return false;
     }
 }

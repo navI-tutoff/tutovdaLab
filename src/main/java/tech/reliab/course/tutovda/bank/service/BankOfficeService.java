@@ -4,18 +4,26 @@ import tech.reliab.course.tutovda.bank.entity.BankAtm;
 import tech.reliab.course.tutovda.bank.entity.BankOffice;
 import tech.reliab.course.tutovda.bank.entity.Employee;
 
+import java.util.List;
+
 public interface BankOfficeService {
     BankOffice create(BankOffice bankOffice);
 
-    boolean installAtm(BankOffice bankOffice, BankAtm bankAtm);
+    BankOffice getBankOfficeById(int id);
 
-    boolean removeAtm(BankOffice bankOffice, BankAtm bankAtm);
+    List<BankOffice> getAllBankOffices();
 
-    boolean inputMoney(BankOffice bankOffice, int money);
+    List<Employee> getAllEmployeesByOfficeId(int id);
 
-    boolean outputMoney(BankOffice bankOffice, int money);
+    boolean installAtm(int id, BankAtm bankAtm);
 
-    boolean addEmployee(BankOffice bankOffice, Employee employee);
+    boolean removeAtm(int id, BankAtm bankAtm);
 
-    boolean removeEmployee(BankOffice bankOffice, Employee employee);
+    boolean inputMoney(int id, int money);
+
+    boolean outputMoney(int id, int money);
+
+    boolean addEmployee(int id, Employee employee);
+
+    boolean removeEmployee(int id, Employee employee);
 }

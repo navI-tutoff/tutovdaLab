@@ -1,15 +1,17 @@
 package tech.reliab.course.tutovda.bank.entity;
 
 import lombok.*;
+import tech.reliab.course.tutovda.bank.service.BankOfficeService;
 
 
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @ToString(includeFieldNames = true)
 public class BankOffice {
-    private int id = (int) (1 + Math.random() * 10000);
+    private static int counterId;
+
+    private int id = 0;
     private String name = "-";
     private String address = "-";
     private Bank bank = null;
@@ -22,7 +24,17 @@ public class BankOffice {
     private long totalMoney = 0;
     private int rentPrice = 0;
 
+    // special initialization with incrementing global counter
+    private void initId() {
+        id = counterId++;
+    }
+
+    public BankOffice() {
+        initId();
+    }
+
     public BankOffice(String name, String address) {
+        initId();
         this.name = name;
         this.address = address;
     }
