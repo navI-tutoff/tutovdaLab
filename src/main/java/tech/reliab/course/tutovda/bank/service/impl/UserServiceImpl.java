@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (user.getBank() == null) {
-            System.err.println("Error: Client - must have bank");
+            System.err.println("[ERROR] User must have bank");
             return null;
         }
 
