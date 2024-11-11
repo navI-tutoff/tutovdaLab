@@ -1,11 +1,23 @@
 package tech.reliab.course.tutovda.bank.service.impl;
 
+import tech.reliab.course.tutovda.bank.entity.CreditAccount;
+import tech.reliab.course.tutovda.bank.entity.PaymentAccount;
 import tech.reliab.course.tutovda.bank.entity.User;
+import tech.reliab.course.tutovda.bank.service.BankService;
 import tech.reliab.course.tutovda.bank.service.UserService;
 
-import java.util.Random;
+import java.util.*;
 
 public class UserServiceImpl implements UserService {
+    private final Map<Integer, User> usersMap = new HashMap<>();
+    private final Map<Integer, List<PaymentAccount>> paymentAccountsByUserIdMap = new HashMap<>();
+    private final Map<Integer, List<CreditAccount>> creditAccountsByUserIdMap = new HashMap<>();
+    private final BankService bankService;
+
+    public UserServiceImpl(BankService bankService) {
+        this.bankService = bankService;
+    }
+
     public User create(User user) {
         if (user == null) {
             return null;
@@ -16,14 +28,59 @@ public class UserServiceImpl implements UserService {
             return null;
         }
 
-        User user1 = new User(user);
+        User newUser = new User(user);
 
         Random random = new Random();
         final int monthlyIncome = random.nextInt() * 10000;
-        user1.setMonthlyIncome(monthlyIncome);
-        calculateCreditRating(user1);
+        newUser.setMonthlyIncome(monthlyIncome);
+        calculateCreditRating(newUser);
 
-        return user1;
+        usersMap.put(newUser.getId(), newUser);
+        paymentAccountsByUserIdMap.put(newUser.getId(), new ArrayList<>());
+        creditAccountsByUserIdMap.put(newUser.getId(), new ArrayList<>());
+        bankService.addUser(user.getBank().getId(), newUser);
+
+        return newUser;
+    }
+
+    public User getUserById(int id) {
+        User user = usersMap.get(id);
+        if (user == null) {
+            System.err.println("[ERROR] Client with id -> " + id + " is not found");
+        }
+        return user;
+    }
+
+    public List<User> getAllUsers() {
+        return new ArrayList<>(usersMap.values());
+    }
+
+    public boolean addPaymentAccount(int id, PaymentAccount account) {
+        User client = usersMap.get(id);
+        if (client != null) {
+            List<PaymentAccount> userCreditAccounts = paymentAccountsByUserIdMap.get(id);
+            userCreditAccounts.add(account);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addCreditAccount(int id, CreditAccount account) {
+        User user = usersMap.get(id);
+        if (user != null) {
+            List<CreditAccount> userCreditAccounts = creditAccountsByUserIdMap.get(id);
+            userCreditAccounts.add(account);
+            return true;
+        }
+        return false;
+    }
+
+    public List<PaymentAccount> getAllPaymentAccountsByUserId(int id) {
+        return paymentAccountsByUserIdMap.get(id);
+    }
+
+    public List<CreditAccount> getAllCreditAccountsByUserId(int id) {
+        return creditAccountsByUserIdMap.get(id);
     }
 
     public int calculateCreditRating(User user) {

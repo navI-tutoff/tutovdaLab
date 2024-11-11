@@ -27,16 +27,18 @@ import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
-        BankService bankService = new BankServiceImpl();
-        Bank bank = bankService.create(new Bank("Ultra mega blatnoy bank"));
-        Bank bank2 = bankService.create(new Bank("2"));
-        Bank bank3 = bankService.create(new Bank("3"));
-        Bank bank4 = bankService.create(new Bank("4"));
-        System.out.println(bank);
-        System.out.println(bank2);
-        System.out.println(bank3);
-        System.out.println(bank4);
 
+
+//        BankService bankService = new BankServiceImpl();
+//        Bank bank = bankService.create(new Bank("Ultra mega blatnoy bank"));
+//        Bank bank2 = bankService.create(new Bank("2"));
+//        Bank bank3 = bankService.create(new Bank("3"));
+//        Bank bank4 = bankService.create(new Bank("4"));
+//        System.out.println(bank);
+//        System.out.println(bank2);
+//        System.out.println(bank3);
+//        System.out.println(bank4);
+//
 //        BankOfficeService bankOfficeService = new BankOfficeServiceImpl();
 //        BankOffice bankOffice = bankOfficeService.create(new BankOffice(
 //                1337,

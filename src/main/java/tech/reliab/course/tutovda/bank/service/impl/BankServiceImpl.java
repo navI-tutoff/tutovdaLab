@@ -14,10 +14,13 @@ public class BankServiceImpl implements BankService {
     private final Map<Integer, List<BankOffice>> officesByBankIdMap = new HashMap<>();
     private final Map<Integer, List<User>> usersByBankIdMap = new HashMap<>();
 
-    @Setter
-    private BankOfficeService bankOfficeService;
-    @Setter
-    private UserService userService;
+    private final BankOfficeService bankOfficeService;
+    private final UserService userService;
+
+    public BankServiceImpl(BankOfficeService bankOfficeService, UserService userService) {
+        this.bankOfficeService = bankOfficeService;
+        this.userService = userService;
+    }
 
     public Bank create(Bank bank) {
         if (bank == null) {

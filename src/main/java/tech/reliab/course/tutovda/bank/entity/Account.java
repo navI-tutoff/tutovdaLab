@@ -5,12 +5,21 @@ import lombok.*;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @ToString(includeFieldNames = true)
 public class Account {
-    protected int id = (int) (1 + Math.random() * 10000);
+    private static int counterId;
+    protected int id = 0;
     protected User user = null;
     protected Bank bank = null;
+
+    // special initialization with incrementing global counter
+    private void initId() {
+        id = counterId++;
+    }
+
+    public Account() {
+        initId();
+    }
 
     public Account(Account account) {
         id = account.id;
@@ -19,6 +28,7 @@ public class Account {
     }
 
     public Account(User user, Bank bank) {
+        initId();
         this.user = user;
         this.bank = bank;
     }
