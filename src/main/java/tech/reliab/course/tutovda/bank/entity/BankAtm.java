@@ -6,12 +6,13 @@ import lombok.*;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @ToString(includeFieldNames = true)
 public class BankAtm {
     public enum Status {NOT_WORKING, WORKING, NO_MONEY}
 
-    private int id = (int) (1 + Math.random() * 10000);
+    public static int counterId;
+
+    private int id = 0;
     private String name = "-";
     private String address = "-";
     private Status status = Status.NOT_WORKING;
@@ -23,7 +24,17 @@ public class BankAtm {
     private long totalMoney = 0;
     private int maintenancePrice = 0;
 
+    // special initialization with incrementing global counter
+    private void initId() {
+        id = counterId++;
+    }
+
+    public BankAtm() {
+        initId();
+    }
+
     public BankAtm(String name, String address) {
+        initId();
         this.name = name;
         this.address = address;
     }

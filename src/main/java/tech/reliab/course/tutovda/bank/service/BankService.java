@@ -12,11 +12,11 @@ public interface BankService {
 
     List<Bank> getAllBanks();
 
-    void setBankOfficeService(BankOfficeService bankOfficeService);
+//    void setBankOfficeService(BankOfficeService bankOfficeService);
 
     List<BankOffice> getAllBankOfficesByBankId(int id);
 
-    void setUserService(UserService userService);
+//    void setUserService(UserService userService);
 
     // add office
     boolean addOffice(int id, BankOffice bankOffice);

@@ -1,10 +1,20 @@
 package tech.reliab.course.tutovda.bank.service.impl;
 
+import lombok.Setter;
 import tech.reliab.course.tutovda.bank.entity.Bank;
 import tech.reliab.course.tutovda.bank.entity.BankAtm;
 import tech.reliab.course.tutovda.bank.service.BankAtmService;
+import tech.reliab.course.tutovda.bank.service.BankOfficeService;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BankAtmServiceImpl implements BankAtmService {
+    private final Map<Integer, BankAtm> BankAtmsMap = new HashMap<>();
+    private final BankOfficeService bankOfficeService;
+
     public BankAtm create(BankAtm bankAtm) {
         if (bankAtm == null) {
             return null;
@@ -21,7 +31,27 @@ public class BankAtmServiceImpl implements BankAtmService {
             System.err.println("[ERROR] Can not create BankAtm - bankOffice can not be null");
             return null;
         }
+
+        BankAtm bankAtmCopy = new BankAtm(bankAtm);
+        BankAtmsMap.put(bankAtmCopy.getId(), bankAtmCopy);
+        bankOfficeService.installAtm(bankAtmCopy.getBankOffice().getId(), bankAtmCopy);
         return new BankAtm(bankAtm);
+    }
+
+    public BankAtmServiceImpl(BankOfficeService bankOfficeService) {
+        this.bankOfficeService = bankOfficeService;
+    }
+
+    public BankAtm getBankAtmById(int id) {
+        BankAtm atm = BankAtmsMap.get(id);
+        if (atm == null) {
+            System.err.println("Atm with id " + id + " is not found");
+        }
+        return atm;
+    }
+
+    public List<BankAtm> getAllBankAtms() {
+        return new ArrayList<>(BankAtmsMap.values());
     }
 
     public boolean inputMoney(BankAtm bankAtm, int money) {
