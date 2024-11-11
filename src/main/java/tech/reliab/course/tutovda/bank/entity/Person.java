@@ -7,12 +7,21 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @ToString(includeFieldNames = true)
 public class Person {
-    protected int id = (int) (1 + Math.random() * 10000);
+    private static int counterId;
+    protected int id = 0;
     protected String name = "-";
     protected LocalDate birthdayDate = null;
+
+    // special initialization with incrementing global counter
+    private void initId() {
+        id = counterId++;
+    }
+
+    public Person() {
+        initId();
+    }
 
     public Person(Person person) {
         id = person.id;
@@ -21,6 +30,7 @@ public class Person {
     }
 
     public Person(String name) {
+        initId();
         this.name = name;
     }
 }
