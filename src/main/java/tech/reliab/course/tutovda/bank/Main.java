@@ -23,96 +23,86 @@ import tech.reliab.course.tutovda.bank.service.impl.PaymentAccountServiceImpl;
 import tech.reliab.course.tutovda.bank.service.impl.UserServiceImpl;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 public class Main {
     public static void main(String[] args) {
+        BankService bankService = new BankServiceImpl();
+        BankOfficeService bankOfficeService = new BankOfficeServiceImpl(bankService);
+        bankService.setBankOfficeService(bankOfficeService);
+        EmployeeService employeeService = new EmployeeServiceImpl(bankOfficeService);
+        BankAtmService bankAtmService = new BankAtmServiceImpl(bankOfficeService);
+        UserService userService = new UserServiceImpl(bankService);
+        bankService.setUserService(userService);
+        PaymentAccountService paymentAccountService = new PaymentAccountServiceImpl(userService);
+        CreditAccountService creditAccountService = new CreditAccountServiceImpl(userService);
 
+        for (int i = 1; i < 6; i++) {
+            String name = "Blatnoy Bank #" + i;
+            bankService.create(new Bank(name));
+        }
 
-//        BankService bankService = new BankServiceImpl();
-//        Bank bank = bankService.create(new Bank("Ultra mega blatnoy bank"));
-//        Bank bank2 = bankService.create(new Bank("2"));
-//        Bank bank3 = bankService.create(new Bank("3"));
-//        Bank bank4 = bankService.create(new Bank("4"));
-//        System.out.println(bank);
-//        System.out.println(bank2);
-//        System.out.println(bank3);
-//        System.out.println(bank4);
-//
-//        BankOfficeService bankOfficeService = new BankOfficeServiceImpl();
-//        BankOffice bankOffice = bankOfficeService.create(new BankOffice(
-//                1337,
-//                "Office of blatnoy bank",
-//                "street Pushkina, house Kolotyshkina",
-//                bank,
-//                true,
-//                true,
-//                0,
-//                true,
-//                true,
-//                true,
-//                bank.getTotalMoney(),
-//                123
-//                ));
-//        System.out.println(bankOffice);
-//
-//        EmployeeService employeeService = new EmployeeServiceImpl();
-//        Employee employee = employeeService.create(new Employee(
-//                1,
-//                "Ruslan Polivaniy",
-//                LocalDate.of(2003, 12, 9),
-//                "Cleaner",
-//                bank,
-//                false,
-//                bankOffice,
-//                false,
-//                7000
-//        ));
-//        System.out.println(employee);
-//
-//        BankAtmService bankAtmService = new BankAtmServiceImpl();
-//        BankAtm bankAtm = bankAtmService.create(new BankAtm(
-//                1,
-//                "Super ATM of Blatnoy bank",
-//                bankOffice.getAddress(),
-//                BankAtm.Status.WORKING,
-//                bank,
-//                bankOffice,
-//                employee,
-//                true,
-//                true,
-//                0,
-//                17));
-//        System.out.println(bankAtm);
-//
-//        UserService userService = new UserServiceImpl();
-//        User user = userService.create(new User(
-//                42,
-//                "Alexey Starodybov",
-//                LocalDate.of(2003, 7, 29),
-//                "Golugolu",
-//                6875321,
-//                bank,
-//                3
-//        ));
-//
-//        PaymentAccountService paymentAccountService = new PaymentAccountServiceImpl();
-//        PaymentAccount paymentAccount = paymentAccountService.create(new PaymentAccount(1, user, bank, 8975));
-//        System.out.println(paymentAccount);
-//
-//        CreditAccountService creditAccountService = new CreditAccountServiceImpl();
-//        CreditAccount creditAccount = creditAccountService.create(new CreditAccount(
-//                1,
-//                user,
-//                bank,
-//                LocalDate.of(1999, 1, 1),
-//                LocalDate.of(1999, 2, 1),
-//                1,
-//                16000,
-//                50,
-//                3,
-//                employee,
-//                paymentAccount));
-//        System.out.println(creditAccount);
+        List<Bank> bankList = bankService.getAllBanks();
+        for (Bank bank: bankList) {
+            for (int i = 1; i < 3; i++) {
+                bankOfficeService.create(new BankOffice(
+                "Office #" + i + " of " + bank.getName(),
+                "street Pushkina, house Kolotyshkina #" + i,
+                bank,
+                true,
+                true,
+                0,
+                true,
+                true,
+                true,
+                14000,
+                100 * i
+                ));
+            }
+        }
+
+        List<BankOffice> officeList = bankOfficeService.getAllBankOffices();
+        for (BankOffice office: officeList) {
+            for (int i = 1; i < 4; i++) {
+                employeeService.create(new Employee(
+                        "Ruslan Polivaniy Version #" + i,
+                        LocalDate.of(2003, 12, 9),
+                        "Cleaner",
+                        office.getBank(),
+                        false,
+                        office,
+                        false,
+                        7000));
+            }
+        }
+
+        // adding Atms
+        for (BankOffice office: officeList) {
+            for (int i = 1; i < 4; i++) {
+                bankAtmService.create(new BankAtm(
+                        "Super ATM #" + i + " of 'Blatnoy bank'",
+                        office.getAddress(),
+                        BankAtm.Status.WORKING,
+                        office.getBank(),
+                        office,
+                        bankOfficeService.getAllEmployeesByOfficeId(office.getId())
+                                .getFirst(),
+                        true,
+                        true,
+                        0,
+                        17));
+            }
+        }
+
+        for (Bank bank: bankList) {
+            System.out.println(bank.toString());
+        }
+
+        System.out.print('\n');
+
+        for (BankOffice office: officeList) {
+            System.out.println(office.toString());
+        }
     }
 }

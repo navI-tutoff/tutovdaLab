@@ -33,4 +33,10 @@ public class Person {
         initId();
         this.name = name;
     }
+
+    public Person(String name, LocalDate birthdayDate) {
+        initId();
+        this.name = name;
+        this.birthdayDate = birthdayDate;
+    }
 }

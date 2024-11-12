@@ -39,6 +39,23 @@ public class BankOffice {
         this.address = address;
     }
 
+    public BankOffice(String name, String address, Bank bank, boolean isWorking, boolean isAtmPlaceable,
+                      int atmsAmount, boolean isCreditAvailable, boolean isCashOutputAvailable,
+                      boolean isCashInputAvailable, long totalMoney, int rentPrice) {
+        initId();
+        this.name = name;
+        this.address = address;
+        this.bank = bank;
+        this.isWorking = isWorking;
+        this.isAtmPlaceable = isAtmPlaceable;
+        this.atmsAmount = atmsAmount;
+        this.isCreditAvailable = isCreditAvailable;
+        this.isCashOutputAvailable = isCashOutputAvailable;
+        this.isCashInputAvailable = isCashInputAvailable;
+        this.totalMoney = totalMoney;
+        this.rentPrice = rentPrice;
+    }
+
     public BankOffice(BankOffice bankOffice) {
         this.id = bankOffice.id;
         this.name = bankOffice.name;

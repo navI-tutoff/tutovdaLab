@@ -14,13 +14,10 @@ public class BankServiceImpl implements BankService {
     private final Map<Integer, List<BankOffice>> officesByBankIdMap = new HashMap<>();
     private final Map<Integer, List<User>> usersByBankIdMap = new HashMap<>();
 
-    private final BankOfficeService bankOfficeService;
-    private final UserService userService;
-
-    public BankServiceImpl(BankOfficeService bankOfficeService, UserService userService) {
-        this.bankOfficeService = bankOfficeService;
-        this.userService = userService;
-    }
+    @Setter
+    private BankOfficeService bankOfficeService;
+    @Setter
+    private UserService userService;
 
     public Bank create(Bank bank) {
         if (bank == null) {
@@ -31,7 +28,7 @@ public class BankServiceImpl implements BankService {
 
         createdBank.setRating((byte) (1 + Math.random() * 100));
         createdBank.setTotalMoney((byte) (1 + Math.random() * 1000000));
-        calculateInterestRate(createdBank.getId());
+        calculateInterestRate(createdBank);
 
         banksMap.put(createdBank.getId(), createdBank);
         officesByBankIdMap.put(createdBank.getId(), new ArrayList<>());
@@ -167,8 +164,7 @@ public class BankServiceImpl implements BankService {
         return false;
     }
 
-    public double calculateInterestRate(int id) {
-        Bank bank = getBankById(id);
+    public double calculateInterestRate(Bank bank) {
         if (bank != null) {
             double reductionFactor = (bank.MAX_BANK_RATING - bank.getRating() + 1) / (double) bank.MAX_BANK_RATING;
 

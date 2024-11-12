@@ -39,6 +39,22 @@ public class BankAtm {
         this.address = address;
     }
 
+    public BankAtm(String name, String address, Status status, Bank bank, BankOffice bankOffice,
+                   Employee employee, boolean isCashOutputAvailable, boolean isCashInputAvailable,
+                   long totalMoney, int maintenancePrice) {
+        initId();
+        this.name = name;
+        this.address = address;
+        this.status = status;
+        this.bank = bank;
+        this.bankOffice = bankOffice;
+        this.employee = employee;
+        this.isCashOutputAvailable = isCashOutputAvailable;
+        this.isCashInputAvailable = isCashInputAvailable;
+        this.totalMoney = totalMoney;
+        this.maintenancePrice = maintenancePrice;
+    }
+
     public BankAtm(BankAtm bankAtm) {
         this.id = bankAtm.id;
         this.name = bankAtm.name;

@@ -26,21 +26,21 @@ public class UserServiceImpl implements UserService {
         if (user.getBank() == null) {
             System.err.println("[ERROR] User must have bank");
             return null;
+        } else {
+            User newUser = new User(user);
+
+            Random random = new Random();
+            final int monthlyIncome = random.nextInt() * 10000;
+            newUser.setMonthlyIncome(monthlyIncome);
+            calculateCreditRating(newUser);
+
+            usersMap.put(newUser.getId(), newUser);
+            paymentAccountsByUserIdMap.put(newUser.getId(), new ArrayList<>());
+            creditAccountsByUserIdMap.put(newUser.getId(), new ArrayList<>());
+            bankService.addUser(newUser.getBank().getId(), newUser);
+
+            return newUser;
         }
-
-        User newUser = new User(user);
-
-        Random random = new Random();
-        final int monthlyIncome = random.nextInt() * 10000;
-        newUser.setMonthlyIncome(monthlyIncome);
-        calculateCreditRating(newUser);
-
-        usersMap.put(newUser.getId(), newUser);
-        paymentAccountsByUserIdMap.put(newUser.getId(), new ArrayList<>());
-        creditAccountsByUserIdMap.put(newUser.getId(), new ArrayList<>());
-        bankService.addUser(user.getBank().getId(), newUser);
-
-        return newUser;
     }
 
     public User getUserById(int id) {

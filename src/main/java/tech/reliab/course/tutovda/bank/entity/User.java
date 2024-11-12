@@ -28,12 +28,23 @@ public class User extends Person {
         this.creditRating = creditRating;
     }
 
-    public User(int id, String name, LocalDate birthdayDate, String workPlace,
+    public User(String name, LocalDate birthdayDate, String workPlace,
                 int monthlyIncome, Bank bank, int creditRating) {
-        super(id, name, birthdayDate);
+        super(name, birthdayDate);
         this.workPlace = workPlace;
         this.monthlyIncome = monthlyIncome;
         this.bank = bank;
+        this.creditRating = creditRating;
+    }
+
+    public User(String name, LocalDate birthdayDate, String workPlace, int monthlyIncome, Bank bank,
+                PaymentAccount paymentAccount, CreditAccount creditAccount, int creditRating) {
+        super(name, birthdayDate);
+        this.workPlace = workPlace;
+        this.monthlyIncome = monthlyIncome;
+        this.bank = bank;
+        this.paymentAccount = paymentAccount;
+        this.creditAccount = creditAccount;
         this.creditRating = creditRating;
     }
 
